@@ -354,18 +354,6 @@
         "menus": {
             "commandPalette": [
                 {
-                    "command": "papyrus.projectImports",
-                    "when": "false"
-                },
-                {
-                    "command": "papyrus.projectSources",
-                    "when": "false"
-                },
-                {
-                    "command": "papyrus.projectSources0",
-                    "when": "false"
-                },
-                {
                     "command": "papyrus.viewAssembly",
                     "when": "false"
                 },
@@ -448,9 +436,12 @@
             "url": "https://github.com/shad0wshayd3"
         },
         {
-            "email": "rjstone@radix.cc",
-            "name": "Robert Stone",
+            "name": "rjstone",
             "url": "https://github.com/rjstone"
+        },
+        {
+            "name": "fireundubh",
+            "url": "https://github.com/fireundubh"
         }
     ],
     "dependencies": {

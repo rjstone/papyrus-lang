@@ -23,7 +23,7 @@ after_build:
   - cmd: powershell ./build.ps1 --target="update-pyro-cli"
   - cmd: powershell ./build.ps1 --target="npm-semantic-release"
   - ps: Get-ChildItem env:* | sort-object name
-  - ps: cd src\papyrus-lang-vscode ; npm run semantic-release -- --no-ci --branch test-build --tag-format -t "<%= version %>.$(git rev-list --count "$(git describe --tags --match v*.*.* --abbrev=0)..HEAD")"
+  - ps: cd src\papyrus-lang-vscode ; npm run semantic-release -- --no-ci --branch test-build --tag-format "<%= version %>.$(git rev-list --count "$(git describe --tags --match v*.*.* --abbrev=0)..HEAD")"
 #  - ps: cd src\papyrus-lang-vscode ; npm install vsce ; npx vsce package
 
 on_success:

@@ -36,7 +36,11 @@ jobs:
         target: default
     - name: VSCE Package
       if: success()
-      run: cd src\papyrus-lang-vscode ; npm install vsce ; mkdir artifact ; npx vsce package -o artifact\papyrus-lang-test-${{ EVENT_PAYLOAD.created_at }}.vsix
+      run: > 
+        cd src\papyrus-lang-vscode ;
+        npm install vsce ;
+        mkdir artifact ;
+        npx vsce package -o artifact\papyrus-lang-test-${{ push.created_at }}.vsix
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v1
@@ -48,4 +52,6 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: '{{ GITHUB_WORKFLOW }}:The project {{ EVENT_PAYLOAD.repository.full_name }} has been executed for {{ EVENT_PAYLOAD.ref }}. (Triggered by {{ EVENT_PAYLOAD.pusher.name }})'
+        args: >
+          '{{ GITHUB_WORKFLOW }}:The project {{ push.repository.full_name }} has been executed
+          for {{ push.ref }}. (Triggered by {{ push.pusher.name }})'

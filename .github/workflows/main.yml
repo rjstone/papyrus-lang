@@ -36,16 +36,16 @@ jobs:
         target: default
     - name: VSCE Package
       if: success()
-      run: cd src\papyrus-lang-vscode ; npm install vsce ; npx vsce package
+      run: cd src\papyrus-lang-vscode ; npm install vsce ; mkdir package ; npx vsce package -o package
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v1
       with:
-        name: papyrus-lang-vscode-*.vsix
-        path: src\papyrus-lang-vscode
-#    - name: Discord notification
-#      env:
-#        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-#      uses: Ilshidur/action-discord@master
-#      with:
-#        args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been uploaded as release.'
+        name: vsix-artifact
+        path: src\papyrus-lang-vscode\package
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: '{{ GITHUB_WORKFLOW }}:The project {{ EVENT_PAYLOAD.repository.full_name }} has been uploaded as an artifact. (Triggered by {{ GITHUB_ACTOR }})'

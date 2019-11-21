@@ -7,9 +7,6 @@ on:
   - src/**
   - build.cake
   - build.ps1
-    
-branches:
-   - master
 
 jobs:
   build:

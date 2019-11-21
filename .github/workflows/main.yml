@@ -54,4 +54,4 @@ jobs:
       with:
         args: >
           '$GITHUB_WORKFLOW:The project ${{ github.event.repository.full_name }} has been executed
-          for ${{ github.event.ref }}. (Triggered by ${{ gethub.event.pusher.name }})'
+          for ${{ github.event.ref }}. (Triggered by ${{ github.event.pusher.name }})'

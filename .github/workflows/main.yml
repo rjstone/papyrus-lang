@@ -45,13 +45,5 @@ jobs:
       if: success()
       uses: actions/upload-artifact@v1
       with:
-        name: vsix-artifact
+        name: papyrus-lang-test-${{ github.event.created_at }}.vsix
         path: src\papyrus-lang-vscode\artifact
-    - name: Discord notification
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      uses: Ilshidur/action-discord@master
-      with:
-        args: >
-          '$GITHUB_WORKFLOW:The project ${{ github.event.repository.full_name }} has been executed
-          for ${{ github.event.ref }}. (Triggered by ${{ github.event.pusher.name }})'

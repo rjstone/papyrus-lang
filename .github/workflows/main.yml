@@ -53,5 +53,5 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: >
-          '${{ GITHUB_WORKFLOW }}:The project ${{ github.event.repository.full_name }} has been executed
+          '$GITHUB_WORKFLOW:The project ${{ github.event.repository.full_name }} has been executed
           for ${{ github.event.ref }}. (Triggered by ${{ gethub.event.pusher.name }})'

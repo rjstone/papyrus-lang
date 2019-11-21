@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Info
-      run: echo 'Pusher=${{ github.event.pusher.name }} Pushed_At=${{ github.event.repository.pushed_at }}'
+      run: echo 'Ref=${{ github.event.ref }} Pusher=${{ github.event.pusher.name }} Pushed_At=${{ github.event.repository.pushed_at }}'
     - name: Checkout
       uses: actions/checkout@v1
     - name: Setup Nuget.exe
@@ -49,3 +49,13 @@ jobs:
       with:
         name: papyrus-lang-test-${{ github.event.repository.pushed_at }}.vsix
         path: src\papyrus-lang-vscode\artifact
+    - name: Notify Success
+      if: success()
+      run: >
+        Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1 ;
+        ./send.ps1 success ${{ secrets.DISCORD_WEBHOOK }}
+    - name: Notify Failure
+      if: failure() || cancelled()
+      run: >
+        Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1 ;
+        ./send.ps1 failure ${{ secrets.DISCORD_WEBHOOK }}

@@ -40,7 +40,7 @@ jobs:
         cd src\papyrus-lang-vscode ;
         npm install vsce ;
         mkdir artifact ;
-        npx vsce package -o artifact\papyrus-lang-test-${{ push.created_at }}.vsix
+        npx vsce package -o artifact\papyrus-lang-test-${{ github.event.created_at }}.vsix
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v1
@@ -53,5 +53,5 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: >
-          '{{ GITHUB_WORKFLOW }}:The project {{ push.repository.full_name }} has been executed
-          for {{ push.ref }}. (Triggered by {{ push.pusher.name }})'
+          '${{ GITHUB_WORKFLOW }}:The project ${{ github.event.repository.full_name }} has been executed
+          for ${{ github.event.ref }}. (Triggered by ${{ gethub.event.pusher.name }})'

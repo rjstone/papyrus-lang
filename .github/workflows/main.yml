@@ -17,6 +17,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
     - name: Update Debug
       if: success()
       uses: ecampidoglio/cake-action@v1.1.1

@@ -49,4 +49,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: papyrus-lang-test-${{ github.event.repository.pushed_at }}.vsix
-        path: src\papyrus-lang-vscode\artifact    
+        path: src\papyrus-lang-vscode\artifact

@@ -9,8 +9,7 @@ on:
       - build.ps1
       - .github/workflows/**
   pull_request:
-    branches:
-      - pull/**
+    types: [ opened, reopened, synchronize ]
 
 
 jobs:

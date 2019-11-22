@@ -10,7 +10,7 @@ on:
       - .github/workflows/**
   pull_request:
     branches:
-      - refs/pull/**
+      - pull/**
 
 
 jobs:

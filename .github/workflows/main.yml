@@ -13,6 +13,18 @@ jobs:
     env:
       VSIX_NAME: papyrus-lang-test-${{ github.event.repository.pushed_at }}.vsix
     steps:
+    - name: Notify Build Started
+      uses: rjstone/discord-webhook-notify@v1
+      with:
+        severity: warn
+        text: >
+          'New test build [${{ env.GITHUB_WORKFLOW }}'
+          ' (${{ env.GITHUB_ACTION }})](https://github.com/rjstone/papyrus-lang/actions)'
+          ' started by ${{ github.actor }}.'
+        description: >
+          '${{ github.repository }} got ${{ github.event }} for ${{ github.ref }}\n'
+          '${{ join(github.commits.*.message, "\n") }}'
+        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     - name: Info
       run: echo 'Ref=${{ github.event.ref }} Pusher=${{ github.event.pusher.name }} Pushed_At=${{ github.event.repository.pushed_at }}'
     - name: Checkout
@@ -48,17 +60,26 @@ jobs:
       with:
         name: ${{ env.VSIX_NAME }}
         path: src\papyrus-lang-vscode\artifact\${{ env.VSIX_NAME }}
+
+    # Notifications
     - name: Notify Success
       if: success()
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: info
-        details: Build Succeeded!
+        description: ${{ env.GITHUB_ACTION }} - Build Succeeded!
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     - name: Notify Failure
       if: failure()
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: error
-        details: Build Failed!
+        description: ${{ env.GITHUB_ACTION }} - Build Failed!
+        webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    - name: Notify Cancelled
+      if: cancelled()
+      uses: rjstone/discord-webhook-notify@v1
+      with:
+        severity: warn
+        description: ${{ env.GITHUB_ACTION }} - Build Cancelled!
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

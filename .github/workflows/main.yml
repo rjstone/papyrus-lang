@@ -17,10 +17,8 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: warn
-        text: >
-          New test build [${{ github.workflow }} \(${{ github.sha }}\)](https://github.com/rjstone/papyrus-lang/actions)
-          started by ${{ github.actor }}.
         description: |
+          New test build [${{ github.workflow }} \(${{ github.sha }}\)](https://github.com/rjstone/papyrus-lang/actions) started by ${{ github.actor }}.
           ${{ github.repository }} got ${{ github.event_name }} for ${{ github.ref }}
           ```
           ${{ join(github.event.commits.*.message, '\n') }}
@@ -68,19 +66,19 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: info
-        description: ${{ github.sha }} - Build Succeeded!
+        description: ${{ github.sha }} - **Build Succeeded!**
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     - name: Notify Failure
       if: failure()
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: error
-        description: ${{ github.sha }} - Build Failed!
+        description: ${{ github.sha }} - **Build Failed!**
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     - name: Notify Cancelled
       if: cancelled()
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: warn
-        description: ${{ github.sha }} - Build Cancelled!
+        description: ${{ github.sha }} - **Build Cancelled!**
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

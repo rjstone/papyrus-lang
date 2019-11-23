@@ -18,8 +18,10 @@ jobs:
       with:
         severity: warn
         description: |
-          New test build [${{ github.workflow }} \(${{ github.sha }}\)](https://github.com/rjstone/papyrus-lang/actions) started by ${{ github.actor }}.
-          ${{ github.repository }} got ${{ github.event_name }} for ${{ github.ref }}
+          New test build [${{ github.workflow }} \(${{ github.sha }}\)](https://github.com/rjstone/papyrus-lang/actions)
+          started by ${{ github.actor }}.
+          (**${{ github.repository }}** got **${{ github.event_name }}** for **${{ github.ref }}**)
+          Commit messages::
           ```
           ${{ join(github.event.commits.*.message, '\n') }}
           ```

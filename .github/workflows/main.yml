@@ -22,7 +22,9 @@ jobs:
           started by ${{ github.actor }}.
         description: |
           ${{ github.repository }} got ${{ github.event_name }} for ${{ github.ref }}
+          ```
           ${{ join(github.event.commits.*.message, '\n') }}
+          ```
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     - name: Info
       run: echo 'Ref=${{ github.event.ref }} Pusher=${{ github.event.pusher.name }} Pushed_At=${{ github.event.repository.pushed_at }}'

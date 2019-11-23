@@ -22,8 +22,8 @@ jobs:
           ' (${{ env.GITHUB_ACTION }})](https://github.com/rjstone/papyrus-lang/actions)'
           ' started by ${{ github.actor }}.'
         description: >
-          '${{ github.repository }} got ${{ github.event }} for ${{ github.ref }}\n'
-          '${{ join(github.commits.*.message, "\n") }}'
+          '${{ github.repository }} got ${{ github.event }} for ${{ github.ref }}\n
+          '${{ join(github.commits.*.message, \'\n\') }}'
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     - name: Info
       run: echo 'Ref=${{ github.event.ref }} Pusher=${{ github.event.pusher.name }} Pushed_At=${{ github.event.repository.pushed_at }}'

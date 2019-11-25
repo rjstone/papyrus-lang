@@ -14,16 +14,16 @@ jobs:
     steps:
  
     - uses: actions/github-script@0.3.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            process.env.TAG_NAME = context.ref.split('/')[2];
-            process.env.VSIX_NAME = `papyrus-lang-${ process.env.TAG_NAME }.vsix`;
-            let msgs = [];
-            for (let commit of context.commits) {
-              msgs.push(` \`${ commit.sha.substr(0,5) }\` ${ commit.author.name } - \`${ commit.message }\``);
-            }
-            process.env.COMMIT_MSGS = msgs.join('\n');
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          process.env.TAG_NAME = context.ref.split('/')[2];
+          process.env.VSIX_NAME = `papyrus-lang-${ process.env.TAG_NAME }.vsix`;
+          let msgs = [];
+          for (let commit of context.commits) {
+            msgs.push(` \`${ commit.sha.substr(0,5) }\` ${ commit.author.name } - \`${ commit.message }\``);
+          }
+          process.env.COMMIT_MSGS = msgs.join('\n');
  
     - name: Notify RC Build Started
       uses: rjstone/discord-webhook-notify@v1

@@ -10,7 +10,7 @@ jobs:
   build_rc_tag:
     runs-on: windows-latest
     env:
-      VSIX_NAME: papyrus-lang-rc-${{ github.ref }}.vsix
+      VSIX_NAME: papyrus-lang-rc-${{ github.event.repository.pushed_at }}.vsix
     steps:
   
     - name: Notify RC Build Started

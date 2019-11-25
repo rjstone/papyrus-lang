@@ -74,6 +74,10 @@ jobs:
         release_name: Release Candidate ${{ github.ref }}
         body: |
           Release Candidate ${{ github.ref }} ${{ env.VSIX_NAME }}
+          This RC adds <insert details here>
+
+          - Make sure to uninstall your existing papyrus extension before installing this.
+          - Disable auto-updates because the version on test builds is always "2.0.0"
         draft: false
         prerelease: true
  

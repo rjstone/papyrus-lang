@@ -1,4 +1,4 @@
-name: GitHub CI
+name: 'GitHub CI: RC Build'
 
 on:
   push:
@@ -13,29 +13,31 @@ jobs:
       VSIX_NAME: failed_to_set.vsix
     steps:
  
-    - uses: actions/github-script@0.3.0
+    - name: Compute Values
+      uses: actions/github-script@0.3.0
+      id: vals
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
-          process.env.TAG_NAME = context.ref.split('/')[2];
-          process.env.VSIX_NAME = `papyrus-lang-${ process.env.TAG_NAME }.vsix`;
-          let msgs = [];
-          for (let commit of context.commits) {
-            msgs.push(` \`${ commit.sha.substr(0,5) }\` ${ commit.author.name } - \`${ commit.message }\``);
+          core.setOutput("tag_name", context.ref.split('/')[2]);
+          core.setOutput("vsix_name", `papyrus-lang-${ process.env.TAG_NAME }.vsix`);
+          if (context.commits) {
+            let msgs = [];
+            for (let commit of context.commits) {
+              msgs.push(` \`${ commit.sha.substr(0,5) }\` ${ commit.author.name } - \`${ commit.message }\``);
+            }
+            core.setOutput("commit_msgs", msgs.join('\n'));
           }
-          process.env.COMMIT_MSGS = msgs.join('\n');
  
     - name: Notify RC Build Started
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: warn
         description: |
-          New **Release Candidate** build [${{ github.workflow }} \(${{ env.TAG_NAME }}\)](https://github.com/rjstone/papyrus-lang/actions)
+          New **Release Candidate** build [${{ github.workflow }} \(${{ steps.vals.tag_name }}\)](https://github.com/rjstone/papyrus-lang/actions)
           started by ${{ github.actor }}.
-          (**${{ github.repository }}** got **${{ github.event_name }}** for **${{ env.TAG_NAME }}**)
-          'Commit messages:'
-          ${{ env.COMMIT_MSGS }}
-          'Building: ${{ env.VSIX_NAME }}'
+          (**${{ github.repository }}** got **${{ github.event_name }}** for **${{ steps.vals.tag_name }}**)
+          'Building: ${{ steps.vals.vsix_name }}'
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
  
     - name: Checkout
@@ -69,14 +71,14 @@ jobs:
         cd src\papyrus-lang-vscode ;
         npm install vsce ;
         mkdir artifact ;
-        npx vsce package -o artifact\${{ env.VSIX_NAME }}
+        npx vsce package -o artifact\${{ steps.vals.vsix_name }}
  
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.VSIX_NAME }}
-        path: src\papyrus-lang-vscode\artifact\${{ env.VSIX_NAME }}
+        name: ${{ steps.vals.vsix_name }}
+        path: src\papyrus-lang-vscode\artifact\${{ steps.vals.vsix_name }}
  
     - name: Create Release
       id: create_release
@@ -85,10 +87,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release Candidate ${{ github.env.tag_name }}
+        release_name: Release Candidate ${{ steps.vals.tag_name }}
         body: |
-          Release Candidate
-          ${{ env.COMMIT_MSGS }}
+          Release Candidate ${{ steps.vals.tag_name }}
         draft: true
         prerelease: true
  
@@ -99,8 +100,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: src\papyrus-lang-vscode\artifact\${{ env.VSIX_NAME }}
-        asset_name: ${{ env.VSIX_NAME }}
+        asset_path: src\papyrus-lang-vscode\artifact\${{ steps.vals.vsix_name }}
+        asset_name: ${{ steps.vals.vsix_name }}
         asset_content_type: application/vsix
 
     # Notifications
@@ -117,7 +118,7 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: error
-        description: '**Build Failed!** ${{ env.VSIX_NAME }}'
+        description: '**Build Failed!** ${{ steps.vals.vsix_name }}'
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     - name: Notify Cancelled
@@ -125,5 +126,5 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: warn
-        description: '**Build Cancelled!** ${{ env.VSIX_NAME }}'
+        description: '**Build Cancelled!** ${{ steps.vals.vsix_name }}'
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

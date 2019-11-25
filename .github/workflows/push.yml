@@ -3,7 +3,9 @@ name: GitHub CI
 on:
   push:
     branches:
-      - **
+      - 'test-build'
+      - 'iss*'
+      - '**'
 
 
 jobs:

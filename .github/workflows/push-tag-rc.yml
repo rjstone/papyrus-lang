@@ -2,8 +2,6 @@ name: 'GitHub CI: RC Build'
 
 on:
   push:
-    branches:
-      - '**'
     tags:
       - '*-rc*'
 
@@ -21,6 +19,7 @@ jobs:
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
+          const core = require('@actions/core');
           core.setOutput("tag_name", context.ref.split('/')[2]);
           core.setOutput("vsix_name", `papyrus-lang-${ process.env.TAG_NAME }.vsix`);
           if (context.commits) {

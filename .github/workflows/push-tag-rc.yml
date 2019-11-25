@@ -2,6 +2,8 @@ name: 'GitHub CI: RC Build'
 
 on:
   push:
+    branches:
+      - '**'
     tags:
       - '*-rc*'
 

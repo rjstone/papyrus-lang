@@ -18,10 +18,10 @@ jobs:
       with:
         severity: warn
         description: |
-          New **Release Candidate** build [${{ github.workflow }} \(${{ github.ref }}\)](https://github.com/rjstone/papyrus-lang/actions)
-          started by ${{ github.actor }}.
-          (**${{ github.repository }}** got **${{ github.event_name }}** for **${{ github.ref }}**)
+          New **Release Candidate** build [${{ github.workflow }}](https://github.com/rjstone/papyrus-lang/actions) \(${{ github.ref }}\)
+          started by ${{ github.actor }}. (**${{ github.repository }}** got **${{ github.event_name }}** for **${{ github.ref }}**)
           'Building: ${{ env.VSIX_NAME }}'
+        footer: Build Started
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
  
     - name: Checkout
@@ -98,7 +98,8 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: info
-        description: '**Build Succeeded!** URL: ${{ steps.upload_release_asset.browser_download_url }}'
+        description: '**Build Succeeded!** URL: ${{ steps.create_release.html_url }}'
+        footer: Build Ended (Success)
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     - name: Notify Failure
@@ -107,6 +108,7 @@ jobs:
       with:
         severity: error
         description: '**Build Failed!** ${{ env.VSIX_NAME }}'
+        footer: Build Ended (Error)
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     - name: Notify Cancelled
@@ -115,4 +117,5 @@ jobs:
       with:
         severity: warn
         description: '**Build Cancelled!** ${{ env.VSIX_NAME }}'
+        footer: Build Ended (Warning)
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

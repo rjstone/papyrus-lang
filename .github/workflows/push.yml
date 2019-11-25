@@ -1,10 +1,9 @@
-name: GitHub CI
+name: 'GitHub CI: Test Build'
 
 on:
   push:
     branches:
       - 'test-build'
-      - 'iss*'
       - '**'
 
 
@@ -14,41 +13,43 @@ jobs:
     env:
       VSIX_NAME: papyrus-lang-test-${{ github.event.repository.pushed_at }}.vsix
     steps:
+
     - name: Notify Build Started
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: warn
         description: |
-          \# New test build [${{ github.workflow }} \(${{ github.sha }}\)](https://github.com/rjstone/papyrus-lang/actions)
-          started by ${{ github.actor }}.
-          (**${{ github.repository }}** got **${{ github.event_name }}** for **${{ github.ref }}**)
-          Commit messages::
-          ```
-          ${{ join(github.event.commits.*.message, '\n') }}
-          ```
+          New build [${{ github.workflow }}](https://github.com/rjstone/papyrus-lang/actions) \(${{ github.ref }}\)
+          started by ${{ github.actor }}. (**${{ github.repository }}** got **${{ github.event_name }}** for **${{ github.ref }}**)
+          'Building: ${{ env.VSIX_NAME }}'
+        footer: Build Started
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-    - name: Info
-      run: echo 'Ref=${{ github.event.ref }} Pusher=${{ github.event.pusher.name }} Pushed_At=${{ github.event.repository.pushed_at }}'
+
     - name: Checkout
       uses: actions/checkout@v1
+
     - name: Setup Nuget.exe
       if: success()
       uses: warrenbuckley/Setup-Nuget@v1
+
     - name: Update Debug
       if: success()
       uses: ecampidoglio/cake-action@v1.1.1
       with:
         target: update-debug-plugin
+
     - name: Update Pyro
       if: success()
       uses: ecampidoglio/cake-action@v1.1.1
       with:
         target: update-pyro-cli
+
     - name: Full Build (default)
       if: success()
       uses: ecampidoglio/cake-action@v1.1.1
       with:
         target: default
+
     - name: VSCE Package
       if: success()
       run: > 
@@ -56,6 +57,7 @@ jobs:
         npm install vsce ;
         mkdir artifact ;
         npx vsce package -o artifact\${{ env.VSIX_NAME }}
+
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v1
@@ -69,19 +71,24 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: info
-        description: ${{ github.sha }} - **Build Succeeded!**
+        description: '**Build Succeeded!** ${{ env.VSIX_NAME }}'
+        footer: Build Ended (Success)
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
     - name: Notify Failure
       if: failure()
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: error
-        description: ${{ github.sha }} - **Build Failed!**
+        description: '**Build Failed!** ${{ env.VSIX_NAME }}'
+        footer: Build Ended (Error)
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
     - name: Notify Cancelled
       if: cancelled()
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: warn
-        description: ${{ github.sha }} - **Build Cancelled!**
+        description: '**Build Cancelled!** ${{ env.VSIX_NAME }}'
+        footer: Build Ended (Warning)
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

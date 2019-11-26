@@ -52,9 +52,9 @@ jobs:
       if: success()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: | 
-        cd src\papyrus-lang-vscode
-        npx semantic-release --branch develop --tag-format '<%= version %>dev' --debug
+        VSCE_TOKEN: junkjunkjunk
+      run: npx semantic-release --branch develop --tag-format '<%= version %>dev' --debug
+      working-directory: .\src\papyrus-lang-vscode
 
     # Notifications
     - name: Notify Success

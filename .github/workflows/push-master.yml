@@ -52,6 +52,7 @@ jobs:
       if: success()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VSCE_TOKEN: junkjunkjunk
       uses: ecampidoglio/cake-action@v1.1.1
       with:
         target: npm-semantic-release

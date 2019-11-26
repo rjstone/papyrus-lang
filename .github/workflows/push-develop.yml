@@ -2,11 +2,11 @@ name: 'GitHub CI: Dev Build'
 
 on:
   push:
-    branches:
-      - 'develop'
+    branches-ignore:
+      - 'master'
 
 jobs:
-  build:
+  dev_build:
     runs-on: windows-latest
     env:
       VSIX_NAME: papyrus-lang-test-${{ github.event.repository.pushed_at }}.vsix
@@ -48,20 +48,21 @@ jobs:
       with:
         target: default
 
-    - name: Setup Node
+    - name: VSCE Package
       if: success()
-      uses: actions/setup-node@v1
+      run: > 
+        cd src\papyrus-lang-vscode ;
+        npm install vsce ;
+        mkdir artifact ;
+        npx vsce package -o artifact\${{ env.VSIX_NAME }}
+ 
+    - name: Upload artifact
+      if: success()
+      uses: actions/upload-artifact@v1
       with:
-        node-version: '13.x'
-
-    - name: Dev Release
-      if: success()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VSCE_TOKEN: junkjunkjunk
-      run: semantic-release --branch develop --tag-format '<%= version %>dev' --debug
-      working-directory: ./src/papyrus-lang-vscode
-
+        name: ${{ env.VSIX_NAME }}
+        path: src\papyrus-lang-vscode\artifact\${{ env.VSIX_NAME }}
+ 
     # Notifications
     - name: Notify Success
       if: success()

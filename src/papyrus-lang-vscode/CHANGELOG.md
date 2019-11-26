@@ -1,3 +1,21 @@
+# [2.18.0](https://github.com/rjstone/papyrus-lang/compare/v2.17.0...v2.18.0) (2019-11-26)
+
+
+### Bug Fixes
+
+* nasty bug when no workspace open ([#115](https://github.com/rjstone/papyrus-lang/issues/115)) ([a5c25fa](https://github.com/rjstone/papyrus-lang/commit/a5c25facc15fd6c4892850e0cafca91def95dd87))
+* **project:** include Skyrim le and fix some bugs [skip ci] ([2a58681](https://github.com/rjstone/papyrus-lang/commit/2a58681f7251f157cdd218f5f28dd13191943d14))
+* Task detection issues. ([#99](https://github.com/rjstone/papyrus-lang/issues/99)) ([2ccd79c](https://github.com/rjstone/papyrus-lang/commit/2ccd79cba041583cda9a3c34e2355da3d1e7d9a6))
+
+
+### Features
+
+* **help:** In editor help viewer. ([b7f4183](https://github.com/rjstone/papyrus-lang/commit/b7f41831cf2984828f7e3467a2184f7c6e0e237b))
+* Debugger plugin mod manager support ([#92](https://github.com/rjstone/papyrus-lang/issues/92)) ([c24c951](https://github.com/rjstone/papyrus-lang/commit/c24c951d57f9da5706a417b55af6d029fe925ee6))
+* Project File Generation ([#96](https://github.com/rjstone/papyrus-lang/issues/96)) and Pyro Compiler Integration ([3e1a182](https://github.com/rjstone/papyrus-lang/commit/3e1a18207afcca09e9e0b17167554534a5b7e95f))
+* Project File Generation ([#96](https://github.com/rjstone/papyrus-lang/issues/96)) and Pyro Compiler Integration ([08631e8](https://github.com/rjstone/papyrus-lang/commit/08631e8507306b01067a7d3e523666b3f8426f11))
+* Project File Generation ([#96](https://github.com/rjstone/papyrus-lang/issues/96)) and Pyro Compiler Integration ([dd445b5](https://github.com/rjstone/papyrus-lang/commit/dd445b590792e98d164096c980b709a2dae43d88))
+
 ## [2.20.1](https://github.com/joelday/papyrus-lang/compare/v2.20.0...v2.20.1) (2019-11-12)
 
 

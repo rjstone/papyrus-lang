@@ -587,6 +587,35 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
         "semantic-release": "semantic-release"
     },
+    "release": {
+        "repositoryUrl": "https://github.com/rjstone/papyrus-lang.git",
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            "@semantic-release/changelog",
+            "@semantic-release/git",
+            "@semantic-release/github"
+        ],
+        "verifyConditions": [
+            "semantic-release-vsce",
+            "@semantic-release/github"
+        ],
+        "prepare": [
+            "@semantic-release/changelog",
+            "@semantic-release/git",
+            "semantic-release-vsce",
+            {
+                "path": "semantic-release-vsce",
+                "packageVsix": "papyrus-lang-vscode.vsix"
+            }
+        ],
+        "publish": [
+            {
+                "path": "@semantic-release/github",
+                "assets": "papyrus-lang-vscode.vsix"
+            }
+        ]
+    },
     "version": "2.0.0",
     "prettier": {
         "tabWidth": 4,

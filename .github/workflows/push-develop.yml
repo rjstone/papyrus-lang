@@ -53,8 +53,17 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         VSCE_TOKEN: junkjunkjunk
-      run: npx semantic-release --branch develop --tag-format '<%= version %>dev' --debug
-      working-directory: .\src\papyrus-lang-vscode
+      uses: ecampidoglio/cake-action@v1.1.1
+      with:
+        target: npm-semantic-release-dev
+
+    # - name: Dev Release
+    #   if: success()
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     VSCE_TOKEN: junkjunkjunk
+    #   run: npx semantic-release --branch develop --tag-format '<%= version %>dev' --debug
+    #   working-directory: .\src\papyrus-lang-vscode
 
     # Notifications
     - name: Notify Success

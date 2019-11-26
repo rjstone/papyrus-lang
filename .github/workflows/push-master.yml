@@ -1,9 +1,9 @@
-name: 'GitHub CI: Dev Build'
+name: 'GitHub CI: Release Build'
 
 on:
   push:
     branches:
-      - 'develop'
+      - 'master'
 
 jobs:
   build:
@@ -48,11 +48,11 @@ jobs:
       with:
         target: default
 
-    - name: Dev Release
+    - name: Final Release
       if: success()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npx semantic-release --branch develop --tag-format '<%= version %>dev' --debug
+      run: npx semantic-release --debug
 
     # Notifications
     - name: Notify Success

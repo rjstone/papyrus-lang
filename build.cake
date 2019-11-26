@@ -32,6 +32,8 @@ public void UpdateDebugPlugin()
     }
     var pluginDllZip = DownloadFile("https://github.com/joelday/papyrus-debug-server/releases/latest/download/papyrus-debug-server.zip");
     Unzip(pluginDllZip, pluginFileDirectory);
+    Information("Debug plugin update complete.");
+
 }
 
 public void UpdatePyroCli()
@@ -44,8 +46,10 @@ public void UpdatePyroCli()
             Force = true
         });
     }
-    var pyroCliZip = DownloadFile("https://github.com/rjstone/pyro/releases/download/1.3.3vsc.77/pyro_cli_v1-3-3vsc-77.zip");
-    Unzip(pyroCliZip, pyroCliDirectory);
+    var pyroCliZip = DownloadFile("https://github.com/fireundubh/pyro/releases/download/1574589710/pyro-master-1574589710.zip");
+    Unzip(pyroCliZip, pyroCliDirectory + Directory(".."));
+    MoveDirectory((pyroCliDirectory + Directory("../pyro-master-1574589710")), pyroCliDirectory);
+    Information("Pyro update complete.");
 }
 
 Task("npm-install")

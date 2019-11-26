@@ -115,15 +115,6 @@ Task("npm-semantic-release")
         });
     });
 
-Task("npm-semantic-release-dev")
-    .Does(() => {
-        NpmRunScript(new NpmRunScriptSettings()
-        {
-            ScriptName = "semantic-release --branch develop --tag-format '<%= version %>dev' --debug",
-            WorkingDirectory = "src/papyrus-lang-vscode"
-        });
-    });
-
 Task("download-compilers")
     .Does(() => {
         DownloadAndUnzip("https://www.dropbox.com/s/vkoffvsdhru7p1c/papyrus-compilers.zip?dl=1", "./dependencies", "./dependencies/compilers");

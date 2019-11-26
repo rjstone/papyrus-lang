@@ -50,20 +50,11 @@ jobs:
       with:
         target: default
 
-    - name: VSCE Package
+    - name: Release
       if: success()
-      run: > 
-        cd src\papyrus-lang-vscode ;
-        npm install vsce ;
-        mkdir artifact ;
-        npx vsce package -o artifact\${{ env.VSIX_NAME }}
-
-    - name: Upload artifact
-      if: success()
-      uses: actions/upload-artifact@v1
-      with:
-        name: ${{ env.VSIX_NAME }}
-        path: src\papyrus-lang-vscode\artifact\${{ env.VSIX_NAME }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npx semantic-release --branch test-build --tag-format '<%= version %>dev' --debug
 
     # Notifications
     - name: Notify Success

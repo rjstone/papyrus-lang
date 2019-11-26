@@ -1,0 +1,29 @@
+{
+    "repositoryUrl": "https://github.com/rjstone/papyrus-lang.git",
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        "@semantic-release/changelog",
+        "@semantic-release/git",
+        "@semantic-release/github"
+    ],
+    "verifyConditions": [
+        "semantic-release-vsce",
+        "@semantic-release/github"
+    ],
+    "prepare": [
+        "@semantic-release/changelog",
+        "@semantic-release/git",
+        "semantic-release-vsce",
+        {
+            "path": "semantic-release-vsce",
+            "packageVsix": "papyrus-lang-vscode.vsix"
+        }
+    ],
+    "publish": [
+        {
+            "path": "@semantic-release/github",
+            "assets": "papyrus-lang-vscode.vsix"
+        }
+    ]
+}

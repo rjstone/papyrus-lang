@@ -48,11 +48,13 @@ jobs:
       with:
         target: default
 
-    - name: Final Release
+    - name: Semantic Release
       if: success()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npx semantic-release --debug
+      uses: ecampidoglio/cake-action@v1.1.1
+      with:
+        target: npm-semantic-release
 
     # Notifications
     - name: Notify Success

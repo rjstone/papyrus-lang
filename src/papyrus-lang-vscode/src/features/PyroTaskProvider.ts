@@ -10,6 +10,7 @@ import { IPyroTaskDefinition, TaskOf } from './PyroTaskDefinition';
 import { PapyrusGame } from '../PapyrusGame';
 import { ICreationKitInfoProvider } from '../CreationKitInfoProvider';
 import { IPathResolver, PathResolver } from '../common/PathResolver';
+import { ILogger, Logger } from '../common/Logger';
 import { getWorkspaceGame } from '../Utilities';
 import { IExtensionContext } from '../common/vscode/IocDecorators';
 
@@ -19,6 +20,7 @@ export class PyroTaskProvider implements TaskProvider, Disposable {
     private readonly _creationKitInfoProvider: ICreationKitInfoProvider;
     private readonly _pathResolver: IPathResolver;
     private readonly _context: ExtensionContext;
+    private readonly _logger: ILogger;
     private _taskCachePromise: Promise<Task[]> | undefined = undefined;
     private readonly _projPattern: GlobPattern;
     private readonly _fileWatcher: FileSystemWatcher;
@@ -27,11 +29,13 @@ export class PyroTaskProvider implements TaskProvider, Disposable {
     constructor(
         @ICreationKitInfoProvider creationKitInfoProvider: ICreationKitInfoProvider,
         @IExtensionContext context: ExtensionContext,
-        @IPathResolver pathResolver: PathResolver
+        @IPathResolver pathResolver: PathResolver,
+        @ILogger logger: Logger
     ) {
         this._creationKitInfoProvider = creationKitInfoProvider;
         this._context = context;
         this._pathResolver = pathResolver;
+        this._logger = logger;
 
         this._taskProviderHandle = tasks.registerTaskProvider('pyro', this);
 

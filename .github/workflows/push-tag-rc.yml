@@ -86,7 +86,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: src\papyrus-lang-vscode\artifact\${{ env.VSIX_NAME }}
         asset_name: ${{ env.VSIX_NAME }}
         asset_content_type: application/vsix
@@ -97,8 +97,7 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: info
-        description: '**Build Succeeded!** URL: ${{ steps.create_release.html_url }}'
-        footer: Build Ended (Success)
+        description: '**Build Succeeded!** ${{ github.ref }} ${{ steps.upload_release_asset.browser_download_url }}'
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     - name: Notify Failure
@@ -106,8 +105,7 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: error
-        description: '**Build Failed!** ${{ env.VSIX_NAME }}'
-        footer: Build Ended (Error)
+        description: '**Build Failed!** ${{ github.ref }} ${{ env.VSIX_NAME }}'
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     - name: Notify Cancelled
@@ -115,6 +113,5 @@ jobs:
       uses: rjstone/discord-webhook-notify@v1
       with:
         severity: warn
-        description: '**Build Cancelled!** ${{ env.VSIX_NAME }}'
-        footer: Build Ended (Warning)
+        description: '**Build Cancelled!** ${{ github.ref }} ${{ env.VSIX_NAME }}'
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
